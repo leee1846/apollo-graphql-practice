@@ -9,25 +9,28 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MenuBar from "./components/MenuBar";
 import "./App.css";
+import { AuthProvider } from "./context/auth";
 
 const App = () => {
   return (
-    <ApolloProvider client={client}>
-      <Router>
-        <Container>
-          <MenuBar />
-          <Route exact path='/'>
-            <Home />
-          </Route>
-          <Route path='/login'>
-            <Login />
-          </Route>
-          <Route path='/register'>
-            <Register />
-          </Route>
-        </Container>
-      </Router>
-    </ApolloProvider>
+    <AuthProvider>
+      <ApolloProvider client={client}>
+        <Router>
+          <Container>
+            <MenuBar />
+            <Route exact path='/'>
+              <Home />
+            </Route>
+            <Route path='/login'>
+              <Login />
+            </Route>
+            <Route path='/register'>
+              <Register />
+            </Route>
+          </Container>
+        </Router>
+      </ApolloProvider>
+    </AuthProvider>
   );
 };
 
