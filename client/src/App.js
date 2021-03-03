@@ -2,24 +2,29 @@ import React from "react";
 import { client } from "./ApolloProvider";
 import { ApolloProvider } from "@apollo/client";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import "sementic-ui-css/sementic.min.css";
+import "semantic-ui-css/semantic.min.css";
+import { Container } from "semantic-ui-react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import MenuBar from "./components/MenuBar";
 
 const App = () => {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Route exact path='/'>
-          <Home />
-        </Route>
-        <Route exact path='/login'>
-          <Login />
-        </Route>
-        <Route exact path='/register'>
-          <Register />
-        </Route>
+        <Container>
+          <MenuBar />
+          <Route exact path='/'>
+            <Home />
+          </Route>
+          <Route exact path='/login'>
+            <Login />
+          </Route>
+          <Route exact path='/register'>
+            <Register />
+          </Route>
+        </Container>
       </Router>
     </ApolloProvider>
   );
