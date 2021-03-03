@@ -24,10 +24,8 @@ const FETCH_POSTS_QUERY = gql`
 `;
 
 const Home = () => {
-  const {
-    loading,
-    data: { getPosts: posts },
-  } = useQuery(FETCH_POSTS_QUERY);
+  const { loading, data } = useQuery(FETCH_POSTS_QUERY);
+  const { getPosts: posts } = data;
 
   return (
     <Grid columns={3}>
