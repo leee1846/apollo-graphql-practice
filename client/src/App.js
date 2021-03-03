@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MenuBar from "./components/MenuBar";
+import "./App.css";
 
 const App = () => {
   return (
@@ -18,10 +19,10 @@ const App = () => {
           <Route exact path='/'>
             <Home />
           </Route>
-          <Route exact path='/login'>
+          <Route path='/login'>
             <Login />
           </Route>
-          <Route exact path='/register'>
+          <Route path='/register'>
             <Register />
           </Route>
         </Container>
