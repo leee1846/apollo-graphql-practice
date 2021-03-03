@@ -4,21 +4,9 @@ import { gql, useMutation } from "@apollo/client";
 import { useHistory } from "react-router-dom";
 import { useForm } from "../utils/hooks";
 
-const REGISTER_USER = gql`
-  mutation register(
-    $username: String!
-    $email: String!
-    $password: String!
-    $confirmPassword: String!
-  ) {
-    register(
-      registerInput: {
-        username: $username
-        email: $email
-        password: $password
-        confirmPassword: $confirmPassword
-      }
-    ) {
+const LOGIN_USER = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
       id
       username
       email
@@ -32,14 +20,12 @@ const Login = () => {
   const history = useHistory();
 
   const [errors, setError] = useState({});
-  const [onChange, onSubmit, values] = useForm(registerUser, {
+  const [onChange, onSubmit, values] = useForm(loginUserCallback, {
     username: "",
-    email: "",
     password: "",
-    confirmPassword: "",
   });
 
-  const [addUser, { loading }] = useMutation(REGISTER_USER, {
+  const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     update(_, result) {
       history.push("/");
     },
@@ -49,8 +35,8 @@ const Login = () => {
     variables: values,
   });
 
-  function registerUser() {
-    addUser();
+  function loginUserCallback() {
+    loginUser();
   }
 
   return (
@@ -67,15 +53,6 @@ const Login = () => {
           onChange={onChange}
         />
         <Form.Input
-          label='Email'
-          placeholder='Email..'
-          name='email'
-          type='text'
-          value={values.email}
-          error={errors.email ? true : false}
-          onChange={onChange}
-        />
-        <Form.Input
           label='Password'
           placeholder='Password..'
           name='password'
@@ -84,20 +61,11 @@ const Login = () => {
           error={errors.password ? true : false}
           onChange={onChange}
         />
-        <Form.Input
-          label='Confirm Password'
-          placeholder='Confirm Password..'
-          name='confirmPassword'
-          type='password'
-          value={values.confirmPassword}
-          error={errors.confirmPassword ? true : false}
-          onChange={onChange}
-        />
         <Button type='submit' primary>
-          Register
+          Login
         </Button>
       </Form>
-      {Object.keys(errors).length > 0 && (
+      {Object.keys(errors).length >= 1 && (
         <div className='ui-error-message'>
           <ul className='list'>
             {Object.values(errors).map((value) => (
