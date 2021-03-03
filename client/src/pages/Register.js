@@ -27,6 +27,7 @@ const REGISTER_USER = gql`
 `;
 
 const Register = () => {
+  const [error, setError] = useState({});
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -38,9 +39,12 @@ const Register = () => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
-  const [addUser, { loading, error }] = useMutation(REGISTER_USER, {
+  const [addUser, { loading, errors }] = useMutation(REGISTER_USER, {
     update(proxy, result) {
       console.log(result);
+    },
+    onError(err) {
+      setError(err.graphQLErrors[0].extensions.exception.errors);
     },
     variables: values,
   });
@@ -49,11 +53,11 @@ const Register = () => {
     event.preventDefault();
     addUser();
   };
-  if (error) console.log(error.message);
+  console.log(errors);
 
   return (
     <div className='form-container'>
-      <Form onSubmit={onSubmit} noValidate>
+      <Form onSubmit={onSubmit} noValidate className={loading ? "loading" : ""}>
         <h1>Register</h1>
         <Form.Input
           label='Username'
@@ -91,6 +95,15 @@ const Register = () => {
           Register
         </Button>
       </Form>
+      {Object.keys(error).length > 0 && (
+        <div className='ui-error-message'>
+          <ul className='list'>
+            {Object.values(error).map((value) => (
+              <li key={value}>{value}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
