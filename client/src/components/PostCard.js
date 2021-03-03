@@ -1,12 +1,21 @@
 import React from "react";
 import { Button, Card, Image } from "semantic-ui-react";
 import { Icon, Label } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 const PostCard = ({
   post: { body, createdAt, id, username, likeCount, commentCount, likes },
 }) => {
+  const likePost = () => {
+    console.log(likePost);
+  };
+
+  const commentOnPost = () => {
+    console.log(commentOnPost);
+  };
+
   return (
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Image
           floated='right'
@@ -14,20 +23,28 @@ const PostCard = ({
           src='https://react.semantic-ui.com/images/avatar/large/molly.png'
         />
         <Card.Header>Molly Thomas</Card.Header>
-        <Card.Meta>New User</Card.Meta>
-        <Card.Description>
-          Molly wants to add you to the group <strong>musicians</strong>
-        </Card.Description>
+        <Card.Meta as={Link} to={`/posts/${id}`}>
+          New User
+        </Card.Meta>
+        <Card.Description>{body}</Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <div className='ui two buttons'>
-          <Button basic color='green'>
-            Approve
+        <Button as='div' labelPosition='right' onClick={likePost}>
+          <Button color='teal' basic>
+            <Icon name='heart' />
           </Button>
-          <Button basic color='red'>
-            Decline
+          <Label basic color='teal' pointing='left'>
+            {likeCount}
+          </Label>
+        </Button>
+        <Button as='div' labelPosition='right' onClick={commentOnPost}>
+          <Button color='blue' basic>
+            <Icon name='comments' />
           </Button>
-        </div>
+          <Label basic color='blue' pointing='left'>
+            {commentCount}
+          </Label>
+        </Button>
       </Card.Content>
     </Card>
   );
