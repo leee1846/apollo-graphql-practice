@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import MenuBar from "./components/MenuBar";
 import "./App.css";
 import { AuthProvider } from "./context/auth";
+import AuthRoute from "./utils/AuthRoute";
 
 const App = () => {
   return (
@@ -18,15 +19,9 @@ const App = () => {
         <Router>
           <Container>
             <MenuBar />
-            <Route exact path='/'>
-              <Home />
-            </Route>
-            <Route path='/login'>
-              <Login />
-            </Route>
-            <Route path='/register'>
-              <Register />
-            </Route>
+            <Route exact path='/' component={Home} />
+            <AuthRoute exact path='/login' component={Login} />
+            <AuthRoute exact path='/register' component={Register} />
           </Container>
         </Router>
       </ApolloProvider>

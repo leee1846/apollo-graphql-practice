@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
-import { Grid, Image } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import PostCard from "../components/PostCard";
 
 const FETCH_POSTS_QUERY = gql`
