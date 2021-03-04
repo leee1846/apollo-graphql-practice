@@ -4,26 +4,7 @@ import { Grid } from "semantic-ui-react";
 import PostCard from "../components/PostCard";
 import { AuthContext } from "../context/auth";
 import PostForm from "../components/PostForm";
-
-const FETCH_POSTS_QUERY = gql`
-  {
-    getPosts {
-      id
-      body
-      likeCount
-      commentCount
-      likes {
-        username
-      }
-      comments {
-        id
-        username
-        createdAt
-        body
-      }
-    }
-  }
-`;
+import { FETCH_POSTS_QUERY } from "../utils/graphql";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
