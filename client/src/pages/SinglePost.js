@@ -4,6 +4,8 @@ import { Card } from "semantic-ui-react";
 import { AuthContext } from "../context/auth";
 import { Grid, Image, Button, Icon, Label } from "semantic-ui-react";
 import LikeButton from "../components/LikeButton";
+import DeleteButton from "./../components/DeleteButton";
+import { useHistory } from "react-router-dom";
 
 const FETCH_POST_QUERY = gql`
   query($postId: ID!) {
@@ -26,16 +28,22 @@ const FETCH_POST_QUERY = gql`
 `;
 
 const SinglePost = (props) => {
+  const history = useHistory();
   const postId = props.match.params.postId;
   const { user } = useContext(AuthContext);
+
   console.log(postId);
-  const {
-    data: { getPost },
-  } = useQuery(FETCH_POST_QUERY, {
+
+  const { data } = useQuery(FETCH_POST_QUERY, {
     variables: {
       postId,
     },
   });
+  const { getPost } = data;
+
+  const deletePostCallback = () => {
+    history.push("/");
+  };
 
   let postMarkup;
   if (!getPost) {
@@ -46,14 +54,14 @@ const SinglePost = (props) => {
     postMarkup = (
       <Grid>
         <Grid.Row>
-          <Grid.column width={2}>
+          <Grid.Column width={2}>
             <Image
               src='https://react.semantic-ui.com/images/avatar/large/molly.png'
               size='small'
               float='right'
             />
-          </Grid.column>
-          <Grid.column width={10}>
+          </Grid.Column>
+          <Grid.Column width={10}>
             <Card.Content>
               <Card.Header>이름</Card.Header>
               <Card.Meta>몇시간전...</Card.Meta>
@@ -74,14 +82,17 @@ const SinglePost = (props) => {
                   {commentCount}
                 </Label>
               </Button>
+              {user && (
+                <DeleteButton postId={id} callback={deletePostCallback} />
+              )}
             </Card.Content>
-          </Grid.column>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     );
   }
 
-  return <div>ss</div>;
+  return postMarkup;
 };
 
 export default SinglePost;
