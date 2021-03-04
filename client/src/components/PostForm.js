@@ -33,7 +33,7 @@ const PostForm = () => {
     body: "",
   });
 
-  const [createPost, {}] = useMutation(CREATE_POST_MUTATION, {
+  const [createPost, { error }] = useMutation(CREATE_POST_MUTATION, {
     variables: values,
     update(proxy, result) {
       const data = proxy.readQuery({
@@ -46,9 +46,6 @@ const PostForm = () => {
       });
       values.body = "";
     },
-    onError(e) {
-      console.log(e);
-    },
   });
 
   function createPostCallback() {
@@ -56,20 +53,30 @@ const PostForm = () => {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <h2>Create a post:</h2>
-      <Form.Field>
-        <Form.Input
-          placeholder='Hi World!'
-          name='body'
-          onChange={onChange}
-          value={values.body}
-        />
-        <Button type='submit' color='teal'>
-          Submit
-        </Button>
-      </Form.Field>
-    </Form>
+    <>
+      <Form onSubmit={onSubmit}>
+        <h2>Create a post:</h2>
+        <Form.Field>
+          <Form.Input
+            placeholder='Hi World!'
+            name='body'
+            onChange={onChange}
+            value={values.body}
+            error={error ? true : false}
+          />
+          <Button type='submit' color='teal'>
+            Submit
+          </Button>
+        </Form.Field>
+      </Form>
+      {error && (
+        <div className='ui error message'>
+          <ul className='list'>
+            <li>{error.graphQLErrors[0].message}</li>
+          </ul>
+        </div>
+      )}
+    </>
   );
 };
 
